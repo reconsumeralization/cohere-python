@@ -19,7 +19,7 @@ class BinaryDistribution(Distribution):
     def is_pure(self) -> bool:
         return False
 
-    def has_ext_modules(foo) -> bool:
+    def has_ext_modules(self) -> bool:
         return True
 
 
