@@ -12,21 +12,11 @@ def random_word():
 
 
 def random_sentence(num_words):
-    sentence = ''
-
-    for _ in range(num_words):
-        sentence += random_word() + ' '
-
-    return sentence
+    return ''.join(f'{random_word()} ' for _ in range(num_words))
 
 
 def random_texts(num_texts, num_words_per_sentence=50):
-    arr = []
-
-    for _ in range(num_texts):
-        arr.append(random_sentence(num_words_per_sentence))
-
-    return arr
+    return [random_sentence(num_words_per_sentence) for _ in range(num_texts)]
 
 
 class TestEmbed(unittest.TestCase):

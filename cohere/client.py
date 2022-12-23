@@ -40,11 +40,7 @@ class Client:
         self._executor = ThreadPoolExecutor(num_workers)
         self.num_workers = num_workers
         self.request_dict = request_dict
-        if version is None:
-            self.cohere_version = cohere.COHERE_VERSION
-        else:
-            self.cohere_version = version
-
+        self.cohere_version = cohere.COHERE_VERSION if version is None else version
         if check_api_key:
             try:
                 res = self.check_api_key()
@@ -55,7 +51,7 @@ class Client:
 
     def check_api_key(self) -> Response:
         headers = {
-            'Authorization': 'BEARER {}'.format(self.api_key),
+            'Authorization': f'BEARER {self.api_key}',
             'Content-Type': 'application/json',
             'Request-Source': 'python-sdk',
         }
@@ -64,8 +60,7 @@ class Client:
 
         url = urljoin(self.api_url, cohere.CHECK_API_KEY_URL)
         if use_xhr_client:
-            response = self.__pyfetch(url, headers, None)
-            return response
+            return self.__pyfetch(url, headers, None)
         else:
             response = requests.request('POST', url, headers=headers)
 
@@ -166,9 +161,10 @@ class Client:
 
         classifications = []
         for res in response['classifications']:
-            labelObj = {}
-            for label, prediction in res['labels'].items():
-                labelObj[label] = LabelPrediction(prediction['confidence'])
+            labelObj = {
+                label: LabelPrediction(prediction['confidence'])
+                for label, prediction in res['labels'].items()
+            }
             classifications.append(Classification(res['input'], res['prediction'], res['confidence'], labelObj))
 
         return Classifications(classifications)
@@ -192,14 +188,22 @@ class Client:
             "texts": texts,
         }
         response = self.__request(cohere.DETECT_LANG_URL, json=json_body)
-        results = []
-        for result in response["results"]:
-            results.append(Language(result["language_code"], result["language_name"], result["confidence"]))
+        results = [
+            Language(
+                result["language_code"],
+                result["language_name"],
+                result["confidence"],
+            )
+            for result in response["results"]
+        ]
         return DetectLanguageResponse(results)
 
     def __print_warning_msg(self, response: Response):
         if 'X-API-Warning' in response.headers:
-            print("\033[93mWarning: {}\n\033[0m".format(response.headers['X-API-Warning']), file=sys.stderr)
+            print(
+                f"\033[93mWarning: {response.headers['X-API-Warning']}\n\033[0m",
+                file=sys.stderr,
+            )
 
     def __pyfetch(self, url, headers, json_body) -> Response:
         req = XMLHttpRequest.new()
@@ -217,7 +221,7 @@ class Client:
 
     def __request(self, endpoint, json=None) -> Any:
         headers = {
-            'Authorization': 'BEARER {}'.format(self.api_key),
+            'Authorization': f'BEARER {self.api_key}',
             'Content-Type': 'application/json',
             'Request-Source': 'python-sdk',
         }
