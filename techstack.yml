@@ -1,7 +1,8 @@
 repo_name: reconsumeralization/cohere-python
 report_id: 4bdc802ad71d3349ad8724970f2442d7
+version: 0.1
 repo_type: Public
-timestamp: '2023-11-09T18:00:40+00:00'
+timestamp: '2024-01-04T15:04:25+00:00'
 requested_by: mkozakov
 provider: github
 branch: main
@@ -16,6 +17,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/993/pUBY5pVj.png
+  detection_source_url: https://github.com/reconsumeralization/cohere-python
   detection_source: Repo Metadata
 - name: Git
   description: Fast, scalable, distributed revision control system
@@ -25,6 +27,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Version Control System
   image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source_url: https://github.com/reconsumeralization/cohere-python
   detection_source: Repo Metadata
 - name: GitHub Actions
   description: Automate your workflow from idea to production
@@ -34,7 +37,8 @@ tools:
   category: Build, Test, Deploy
   sub_category: Continuous Integration
   image_url: https://img.stackshare.io/service/11563/actions.png
-  detection_source: ".github/workflows/test.yaml"
+  detection_source_url: https://github.com/reconsumeralization/cohere-python/blob/main/.github/workflows/lint.yaml
+  detection_source: ".github/workflows/lint.yaml"
   last_updated_by: Michael
   last_updated_on: 2022-12-16 07:14:02.000000000 Z
 - name: PyPI
@@ -45,6 +49,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Hosted Package Repository
   image_url: https://img.stackshare.io/service/12572/-RIWgodF_400x400.jpg
+  detection_source_url: https://github.com/reconsumeralization/cohere-python/blob/main/setup.py
   detection_source: setup.py
   last_updated_by: Carol Chen
   last_updated_on: 2021-01-20 22:44:40.000000000 Z
@@ -57,16 +62,18 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/4631/default_c2062d40130562bdc836c13dbca02d318205a962.png
+  detection_source_url: https://github.com/reconsumeralization/cohere-python
   detection_source: Repo Metadata
 - name: requests
   description: Python HTTP for Humans
-  package_url: https://pypi.org/requests
+  package_url: https://pypi.org/project/requests
   license: Apache-2.0
   open_source: true
   hosted_saas: false
   category: Libraries
   sub_category: PyPI Packages
   image_url: https://img.stackshare.io/package/19826/default_d7c684bf2673f008a9f02ac93901229297a22d7e.png
+  detection_source_url: https://github.com/reconsumeralization/cohere-python/blob/main/setup.py
   detection_source: setup.py
   last_updated_by: Ivan Zhang
   last_updated_on: 2022-08-24 15:10:41.000000000 Z
