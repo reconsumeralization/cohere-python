@@ -1,84 +1,65 @@
-![ci badge](https://github.com/cohere-ai/cohere-python/actions/workflows/test.yaml/badge.svg)
-![version badge](https://img.shields.io/pypi/v/cohere)
-![license badge](https://img.shields.io/github/license/cohere-ai/cohere-python)
-
 # Cohere Python SDK
 
-This package provides functionality developed to simplify interfacing with the [Cohere API](https://docs.cohere.ai/) in Python 3.
+![](banner.png)
+
+[![version badge](https://img.shields.io/pypi/v/cohere)](https://pypi.org/project/cohere/)
+![license badge](https://img.shields.io/github/license/cohere-ai/cohere-python)
+[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-SDK%20generated%20by%20Fern-brightgreen)](https://github.com/fern-api/fern)
+
+The Cohere Python SDK allows access to Cohere models across many different platforms: the cohere platform, AWS (Bedrock, Sagemaker), Azure, GCP and Oracle OCI. For a full list of support and snippets, please take a look at the [SDK support docs page](https://docs.cohere.com/docs/cohere-works-everywhere).
 
 ## Documentation
 
-See the [API documentation](https://docs.cohere.ai/reference/about).
+Cohere documentation and API reference is available [here](https://docs.cohere.com/).
 
 ## Installation
 
-The package can be installed with `pip`:
-
-```bash
-pip install --upgrade cohere
+```
+pip install cohere
 ```
 
-Install from source:
+## Usage
 
-```bash
-python setup.py install
-```
-
-### Requirements
-
-- Python 3.6+
-
-## Quick Start
-
-To use this library, you must have an API key and specify it as a string when creating the `cohere.Client` object. API keys can be created through the [platform](https://os.cohere.ai). This is a basic example of the creating the client and using the `generate` endpoint.
-
-```python
+```Python
 import cohere
 
-# initialize the Cohere Client with an API Key
-co = cohere.Client('YOUR_API_KEY')
+co = cohere.ClientV2()
 
-# generate a prediction for a prompt
-prediction = co.generate(
-            model='large',
-            prompt='co:here',
-            max_tokens=10)
+response = co.chat(
+    model="command-r-plus-08-2024",
+    messages=[{"role": "user", "content": "hello world!"}],
+)
 
-# print the predicted text
-print('prediction: {}'.format(prediction.generations[0].text))
+print(response)
 ```
 
-## Versioning
+> [!TIP]
+> You can set a system environment variable `CO_API_KEY` to avoid writing your api key within your code, e.g. add `export CO_API_KEY=theapikeyforyouraccount`
+> in your ~/.zshrc or ~/.bashrc, open a new terminal, then code calling `cohere.Client()` will read this key.
 
-To use the SDK with a specific API version, you can specify it when creating the Cohere Client:
 
-```python
+## Streaming
+
+The SDK supports streaming endpoints. To take advantage of this feature for chat,
+use `chat_stream`.
+
+```Python
 import cohere
 
-co = cohere.Client('YOUR_API_KEY', '2022-12-06')
+co = cohere.ClientV2()
+
+response = co.chat_stream(
+    model="command-r-plus-08-2024",
+    messages=[{"role": "user", "content": "hello world!"}],
+)
+
+for event in response:
+    if event.type == "content-delta":
+        print(event.delta.message.content.text, end="")
 ```
 
-## Endpoints
+## Contributing
 
-For a full breakdown of endpoints and arguments, please consult the [Cohere Docs](https://docs.cohere.ai/).
+While we value open-source contributions to this SDK, the code is generated programmatically. Additions made directly would have to be moved over to our generation code, otherwise they would be overwritten upon the next generated release. Feel free to open a PR as a proof of concept, but know that we will not be able to merge it as-is. We suggest opening an issue first to discuss with us!
 
-| Cohere Endpoint  | Function             |
-| ---------------- | -------------------- |
-| /generate        | co.generate()        |
-| /embed           | co.embed()           |
-| /classify        | co.classify()        |
-| /tokenize        | co.tokenize()        |
-| /detokenize      | co.detokenize()      |
-| /detect-language | co.detect_language() |
-
-## Models
-
-When you call Cohere's APIs we decide on a good default model for your use-case behind the scenes. The default model is great to get you started, but in production environments we recommend that you specify the model size yourself via the `model` parameter. Learn more about the available models here(https://os.cohere.ai)
-
-## Responses
-
-All of the endpoint functions will return a Cohere object corresponding to the endpoint (e.g. for generation, it would be `Generation`). The responses can be found as instance variables of the object (e.g. generation would be `Generation.text`). The names of these instance variables and a detailed breakdown of the response body can be found in the [Cohere Docs](https://docs.cohere.ai/). Printing the Cohere response object itself will display an organized view of the instance variables.
-
-## Exceptions
-
-Unsuccessful API calls from the SDK will raise an exception. Please see the documentation's page on [errors](https://docs.cohere.ai/errors-reference) for more information about what the errors mean.
+On the other hand, contributions to the README are always very welcome!

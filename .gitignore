@@ -1,6 +1,5 @@
-.env
-build/
-cohere.egg-info/
 dist/
-*.pyc
-__pycache__
+.mypy_cache/
+__pycache__/
+poetry.toml
+.ruff_cache/
